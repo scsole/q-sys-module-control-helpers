@@ -94,4 +94,57 @@ function Module.LinkStringToLegend(sender, receiver, addToEventHandler)
   receiver.Legend = load("return \"" .. sender.String .. "\"")()
 end
 
+--- Link controls from a PIN Pad component to all matching prefixed controls.
+--- @param pinPadComponent table The PIN Pad component. This must be a valid component.
+--- @param controlPrefix string The prefix used on all associated PIN Pad controls accessible from this script.
+--- @param addToEventHandlers boolean? When `true`, the links will not override any existing EventHandlers
+function Module.LinkPinPad(pinPadComponent, controlPrefix, addToEventHandlers)
+  local triggerKeys = {
+    "backspace",
+    "clear",
+    "enter",
+    "logout",
+    "pinpad.0",
+    "pinpad.1",
+    "pinpad.2",
+    "pinpad.3",
+    "pinpad.4",
+    "pinpad.5",
+    "pinpad.6",
+    "pinpad.7",
+    "pinpad.8",
+    "pinpad.9"
+  }
+  local stringKeys = {
+    "pin",
+    "pin.0",
+  }
+  local valueKeys = {
+    "pin.match.0",
+    "pin.matched",
+    "pin.mismatched",
+  }
+
+  for _, key in ipairs(triggerKeys) do
+    local ctrl = Controls[controlPrefix .. key]
+    if ctrl then
+      Module.LinkTrigger(ctrl, pinPadComponent[key], addToEventHandlers)
+    end
+  end
+
+  for _, key in ipairs(stringKeys) do
+    local ctrl = Controls[controlPrefix .. key]
+    if ctrl then
+      Module.LinkString(pinPadComponent[key], ctrl, addToEventHandlers)
+    end
+  end
+
+  for _, key in ipairs(valueKeys) do
+    local ctrl = Controls[controlPrefix .. key]
+    if ctrl then
+      Module.LinkValue(pinPadComponent[key], ctrl, addToEventHandlers)
+    end
+  end
+end
+
 return Module
