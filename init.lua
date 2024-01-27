@@ -1,5 +1,23 @@
 local Module = {}
 
+--- Link to controls so that the receiver is triggered whenever the sender is triggered.
+--- @param sender table The control which will be subscribed to
+--- @param receiver table The control which will be triggered by the sender
+--- @param addToEventHandler boolean? When `true`, the link will not overwrite an existing EventHandler
+function Module.LinkTrigger(sender, receiver, addToEventHandler)
+  if addToEventHandler and sender.EventHandler then
+    local originalEH = sender.EventHandler
+    sender.EventHandler = function(self)
+      originalEH(self)
+      receiver:Trigger()
+    end
+  else
+    sender.EventHandler = function()
+      receiver:Trigger()
+    end
+  end
+end
+
 --- Bind the value of a receiver control to the value of a sender. This will initialize to the value of the receiver.
 --- @param sender table The control which will be subscribed to
 --- @param receiver table The control which will be set by the value of the sender
