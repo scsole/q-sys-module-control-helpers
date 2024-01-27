@@ -113,7 +113,9 @@ function Module.LinkPinPad(pinPadComponent, controlPrefix, addToEventHandlers)
     "pinpad.6",
     "pinpad.7",
     "pinpad.8",
-    "pinpad.9"
+    "pinpad.9",
+    "pin.matched",
+    "pin.mismatched",
   }
   local stringKeys = {
     "pin",
@@ -121,8 +123,6 @@ function Module.LinkPinPad(pinPadComponent, controlPrefix, addToEventHandlers)
   }
   local valueKeys = {
     "pin.match.0",
-    "pin.matched",
-    "pin.mismatched",
   }
 
   for _, key in ipairs(triggerKeys) do
