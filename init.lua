@@ -28,6 +28,34 @@ function Module.BidirectionalLinkValue(ctrl1, ctrl2, addToEventHandlers)
   Module.LinkValue(ctrl2, ctrl1, addToEventHandlers)
 end
 
+--- Bind the string of a receiver control to the string of a sender. This will initialize to the string of the receiver.
+--- @param sender table The control which will be subscribed to
+--- @param receiver table The control which will be set by the string of the sender
+--- @param addToEventHandler boolean? When `true`, the link will not overwrite an existing EventHandler
+function Module.LinkString(sender, receiver, addToEventHandler)
+  if addToEventHandler and sender.EventHandler then
+    local originalEH = sender.EventHandler
+    sender.EventHandler = function(self)
+      originalEH(self)
+      receiver.String = self.String
+    end
+  else
+    sender.EventHandler = function(self)
+      receiver.String = self.String
+    end
+  end
+  receiver.String = sender.String
+end
+
+--- Bind to controls together by string. This will initialize both controls to the string of `ctrl1`.
+--- @param ctrl1 table The first control
+--- @param ctrl2 table The second control
+--- @param addToEventHandlers boolean? When `true`, the link will not overwrite any existing EventHandlers
+function Module.BidirectionalLinkString(ctrl1, ctrl2, addToEventHandlers)
+  Module.LinkString(ctrl1, ctrl2, addToEventHandlers)
+  Module.LinkString(ctrl2, ctrl1, addToEventHandlers)
+end
+
 --- Bind the legend of a receiver control to the string of a sender. This will initialize the legend of the receiver.
 --- Escaped characters (e.g. `\n`) are supported.
 --- @param sender table The control which will be subscribed to
