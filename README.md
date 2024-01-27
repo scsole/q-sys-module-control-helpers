@@ -1,8 +1,8 @@
-# Q-Sys Template Module
+# Q-Sys Control Helpers Module
 
-An example Q-Sys lua module.
+ Useful functions for linking controls in Q-Sys scripts.
 
-[![Luacheck](https://github.com/scsole/q-sys-module-template/actions/workflows/luacheck.yml/badge.svg)](https://github.com/scsole/q-sys-module-template/actions/workflows/luacheck.yml)
+[![Luacheck](https://github.com/scsole/q-sys-module-control-helpers/actions/workflows/luacheck.yml/badge.svg)](https://github.com/scsole/q-sys-module-control-helpers/actions/workflows/luacheck.yml)
 
 ## Quick start
 
@@ -13,6 +13,6 @@ An example Q-Sys lua module.
 ## Usage
 
 ```lua
-local myModule = require('template')
-myModule.HelloWorld()
+local ControlHelpers = require('control-helpers')
+
 ```
