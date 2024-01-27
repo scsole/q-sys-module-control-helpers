@@ -143,6 +143,13 @@ function Module.LinkPinPad(pinPadComponent, controlPrefix, addToEventHandlers)
     local ctrl = Controls[controlPrefix .. key]
     if ctrl then
       Module.LinkValue(pinPadComponent[key], ctrl, addToEventHandlers)
+      local eh = pinPadComponent[key].EventHandler
+      pinPadComponent[key].EventHandler = function(self)
+        eh(self)
+        if ctrl.EventHandler then
+          ctrl.EventHandler(ctrl) -- Also call the control's event handler incase it triggers additional logic
+        end
+      end
     end
   end
 end
