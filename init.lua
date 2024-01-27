@@ -28,4 +28,24 @@ function Module.BidirectionalLinkValue(ctrl1, ctrl2, addToEventHandlers)
   LinkValue(ctrl2, ctrl1, addToEventHandlers)
 end
 
+--- Bind the legend of a receiver control to the string of a sender. This will initialize the legend of the receiver.
+--- Escaped characters (e.g. `\n`) are supported.
+--- @param sender table The control which will be subscribed to
+--- @param receiver table The control who's legend will be set by the string of the sender
+--- @param addToEventHandler boolean? When `true`, the link will not overwrite an existing EventHandler
+function Module.LinkStringToLegend(sender, receiver, addToEventHandler)
+  if addToEventHandler and sender.EventHandler then
+    local originalEH = sender.EventHandler
+    sender.EventHandler = function(self)
+      originalEH(self)
+      receiver.Legend = load("return \"" .. self.String .. "\"")()
+    end
+  else
+    sender.EventHandler = function(self)
+      receiver.Legend = load("return \"" .. self.String .. "\"")()
+    end
+  end
+  receiver.Legend = load("return \"" .. sender.String .. "\"")()
+end
+
 return Module
