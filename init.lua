@@ -24,8 +24,8 @@ end
 --- @param ctrl2 table The second control
 --- @param addToEventHandlers boolean? When `true`, the link will not overwrite any existing EventHandlers
 function Module.BidirectionalLinkValue(ctrl1, ctrl2, addToEventHandlers)
-  LinkValue(ctrl1, ctrl2, addToEventHandlers)
-  LinkValue(ctrl2, ctrl1, addToEventHandlers)
+  Module.LinkValue(ctrl1, ctrl2, addToEventHandlers)
+  Module.LinkValue(ctrl2, ctrl1, addToEventHandlers)
 end
 
 --- Bind the legend of a receiver control to the string of a sender. This will initialize the legend of the receiver.
