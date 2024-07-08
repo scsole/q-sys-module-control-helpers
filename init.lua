@@ -1,6 +1,6 @@
 local Module = {}
 
---- Link to controls so that the receiver is triggered whenever the sender is triggered.
+--- Link two controls so that the receiver is triggered whenever the sender is triggered.
 --- @param sender table The control which will be subscribed to
 --- @param receiver table The control which will be triggered by the sender
 --- @param addToEventHandler boolean? When `true`, the link will not overwrite an existing EventHandler
@@ -16,6 +16,38 @@ function Module.LinkTrigger(sender, receiver, addToEventHandler)
       receiver:Trigger()
     end
   end
+end
+
+--- Link two state trigger controls so that the sender triggers the receiver while tracking the state of the receiver.
+--- @param secondary table The state trigger control which will also trigger the primary control
+--- @param primary table The state trigger control which will be triggered by the secondary control and determine both control's state
+--- @param addToEventHandler boolean? When `true`, the link will not overwrite existing EventHandlers
+function Module.LinkStateTrigger(secondary, primary, addToEventHandler)
+  if addToEventHandler and secondary.EventHandler then
+    local originalEH = secondary.EventHandler
+    secondary.EventHandler = function(self)
+      originalEH(self)
+      primary:Trigger()
+    end
+  else
+    secondary.EventHandler = function()
+      primary:Trigger()
+    end
+  end
+
+  if addToEventHandler and primary.EventHandler then
+    local originalEH = primary.EventHandler
+    primary.EventHandler = function(self)
+      originalEH(self)
+      secondary.Value = self.Value
+    end
+  else
+    primary.EventHandler = function(self)
+      secondary.Value = self.Value
+    end
+  end
+
+  secondary.Value = primary.Value
 end
 
 --- Bind the value of a receiver control to the value of a sender. This will initialize to the value of the receiver.
