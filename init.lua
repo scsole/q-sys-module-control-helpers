@@ -78,6 +78,34 @@ function Module.BidirectionalLinkValue(ctrl1, ctrl2, addToEventHandlers)
   Module.LinkValue(ctrl2, ctrl1, addToEventHandlers)
 end
 
+--- Bind the boolean of a receiver control to the boolean of a sender. This will initialize to the boolean of the sender.
+--- @param sender table The control which will be subscribed to
+--- @param receiver table The control which will be set by the boolean of the sender
+--- @param addToEventHandler boolean? When `true`, the link will not overwrite an existing EventHandler
+function Module.LinkBoolean(sender, receiver, addToEventHandler)
+  if addToEventHandler and sender.EventHandler then
+    local originalEH = sender.EventHandler
+    sender.EventHandler = function(self)
+      originalEH(self)
+      receiver.Boolean = self.Boolean
+    end
+  else
+    sender.EventHandler = function(self)
+      receiver.Boolean = self.Boolean
+    end
+  end
+  receiver.Boolean = sender.Boolean
+end
+
+--- Bind to controls together by boolean. This will initialize both controls to the boolean of `ctrl1`.
+--- @param ctrl1 table The first control
+--- @param ctrl2 table The second control
+--- @param addToEventHandlers boolean? When `true`, the link will not overwrite any existing EventHandlers
+function Module.BidirectionalLinkBoolean(ctrl1, ctrl2, addToEventHandlers)
+  Module.LinkBoolean(ctrl1, ctrl2, addToEventHandlers)
+  Module.LinkBoolean(ctrl2, ctrl1, addToEventHandlers)
+end
+
 --- Bind the string of a receiver control to the string of a sender. This will initialize to the string of the receiver.
 --- @param sender table The control which will be subscribed to
 --- @param receiver table The control which will be set by the string of the sender
