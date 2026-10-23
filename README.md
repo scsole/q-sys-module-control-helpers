@@ -16,7 +16,32 @@ See init.lua for all and functions and their descriptions.
 
 ```lua
 local ControlHelpers = require('control-helpers')
+
+-- Trigger the receiver whenever the sender is triggered
 ControlHelpers.LinkTrigger(trigger1, trigger2)
+
+-- Link two state triggers, tracking the state of the primary (second argument)
+ControlHelpers.LinkStateTrigger(stateTrigger1, stateTrigger2)
+
+-- Bind the receiver's value to the sender's value
 ControlHelpers.LinkValue(knob1, knob2)
+
+-- Bind two controls together by value
+ControlHelpers.BidirectionalLinkValue(knob1, knob2)
+
+-- Bind the receiver's string to the sender's string
 ControlHelpers.LinkString(textbox1, textbox2)
+
+-- Bind two controls together by string
+ControlHelpers.BidirectionalLinkString(textbox1, textbox2)
+
+-- Bind the receiver's legend to the sender's string (escaped characters such as \n are supported)
+ControlHelpers.LinkStringToLegend(textbox1, button1)
+
+-- Link a PIN Pad component to all controls starting with the given prefix
+ControlHelpers.LinkPinPad(Component.New('PIN Pad'), 'pinpad_')
+
+-- Every function except LinkPinPad accepts an optional final argument. Pass `true` to keep
+-- any existing EventHandler instead of overwriting it
+ControlHelpers.LinkValue(knob1, knob2, true)
 ```
